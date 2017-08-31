@@ -32,25 +32,22 @@ public class SLinkedList<E> implements List<E> {
 
 	@Override
 	public void add(int index, E element) {
-		if(index < 0 ||index <= size()){
+		if(index < 0 ||index > size()){
 			throw new IndexOutOfBoundsException(); 
 		}
 		SNode<E> current = top; 
 		SNode<E> newNode = new SNode<E> (element); 
 		
-		if(top.next != null && index==0){
-			newNode.next = top.next; 
+		for(int i=0; i<index;i++)
+			current = current.next;
 			top.next = newNode; 
 			size++; 
-		}else {
-           for(int i = 0; i < index; i++){
-             current = current.next; 
-        }
-           SNode<E> x = current.next; 
-           current.next = newNode; 
-           newNode.next = x; 
-           size++; 
-		}
+			
+			current = current.next;
+			current.next=newNode; 
+			size++;
+			
+ 
 		}
 		
 
