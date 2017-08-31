@@ -62,7 +62,6 @@ public interface List<E> {
 	 */
 	public E getFirst();
 	
-	
 	/**
 	 * Returns the last element in this list.
 	 * @return the last element in this list
@@ -134,5 +133,4 @@ public interface List<E> {
 	 * Elements are converted to strings as by String.valueOf(Object).
 	 */
 	public String toString();
-	
 }
