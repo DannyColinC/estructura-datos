@@ -1,5 +1,7 @@
 package Examen01;
 import java.util.NoSuchElementException;
+import.java.util. Arrays;
+
 
 public class ArrayList<E> implements List<E> {
 	private Object[] top;
