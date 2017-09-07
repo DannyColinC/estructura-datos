@@ -22,11 +22,32 @@ public class ArrayList<E> implements List<E> {
 	}
 	
 	private void reserveExtraCapacity(int extraCapacity) {
+		Object[] arrayList = new Object[top.length];
+		for(int i= 0; i < top.length; i++) {
+			arrayList[i] = top[i];
+		}
+		top = new Object[top.length + extraCapacity];
+		
+		for(int j =0; j<arrayList.length; j++) {
+			top[j] = arrayList[j];
+             }
 		
 		
 	}
 	
-	private void shiftContentsRiht(int index) {
+	private void shiftContentsRight(int index) {
+		if(index < 0 || index >size()) {
+			throw new IndexOutOfBoundsException();
+		}
+		
+		for(int i = size-1; i >= index; i--) {
+			
+			top[i+1] = top[i];
+			if(i == index) {
+				top[i] = null;
+			}
+			
+}
 		
 	}
 	
@@ -42,6 +63,7 @@ public class ArrayList<E> implements List<E> {
 	@Override
 	public void addFirst(E e) {
 		// TODO Auto-generated method stub
+		ensureCapacity();
 		Object<E> newNode = new Object<E>(e); 
 		newNode.next= top.length; 
 		top.length =newNode.next;
@@ -52,6 +74,7 @@ public class ArrayList<E> implements List<E> {
 	@Override
 	public void addLast(E e) {
 		// TODO Auto-generated method stub
+		ensureCapacity();
 		Object<E> newNode= new Object<E>(e); 
      	Object<E> current=top;
 		while(current.next  !=null); 
@@ -65,6 +88,7 @@ public class ArrayList<E> implements List<E> {
 	@Override
 	public void add(int index, E element) {
 		// TODO Auto-generated method stub
+		ensureCapacity();
 		if(index < 0 ||index > size()){
 			throw new IndexOutOfBoundsException(); 
 		}
