@@ -1,252 +1,333 @@
+package practica3;
 
 import java.util.NoSuchElementException;
 
-
 public class LinkedList<E> implements List<E> {
 	private Node<E> header;
-	private int size; 
+	private int size;
 	
 	public LinkedList() {
-		header=new Node<E>(); 
-		size=0;
-		
+		header = new Node<E>();
+		size = 0;
 	}
+	
 	/**
-	* @param index the index of the node to get. 
+	 * Gets the node at the specified index.
+	 * @param index the index of the node to get
 	 * @return the node at the specified position
-	 * @throws  IndexOutOfBoundsException if the index is (index< 0 || index >=size())  
+	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
 	 */
-	private Node<E> node(int index){
-		if( index < 0||index>=size()) {
+	private Node<E> node(int index) {
+		if(index < 0 || index >= size()) {
 			throw new IndexOutOfBoundsException();
 		}
-		if(index <(size>>1)) {
 		
-			Node<E> x= header.next; 
-			for(int i=0;i<index; i++); 
-			x=x.next; 
-			return x; 
-		}else {
-		
-			Node<E> x=header.prev; 
-			for(int i=size -1; i> index;i--)
-				x=x.prev; 
-			 return x; 
-		}
-		
-	}
-	public void addFirst(E e) {
-		Node<E> newElement = new Node<E>(e); 
-		Node<E> firstElement = new Node<E>(e); 
-		newElement.next= firstElement; 
-		firstElement.prev =newElement;
-		
-		newElement.prev=header; 
-		header.next = newElement; 
-		size++; 	
-		
+		if (index < (size >> 1)) {
+            Node<E> x = header.next;
+            for (int i = 0; i < index; i++)
+                x = x.next;
+            return x;
+        } else {
+            Node<E> x = header.prev;
+            for (int i = size - 1; i > index; i--)
+                x = x.prev;
+            return x;
+        }
 	}
 
-	public void addLast(E e){
-		Node<E> newElement=new Node<E>(e); 
-		Node<E> lastElement = new Node<E>(e); 
-  	    newElement.next=lastElement; 
-  	    lastElement.prev=newElement; 
-  	    
-  	    newElement.prev=header; 
-  	    header.next=newElement; 
-  	    size++; 
+	@Override
+	public void addFirst(E e) {
+		// TODO Auto-generated method stub
+        Node<E> newElement = new Node<E>(e);
+
+        Node<E> firstElement = header.next;
+
+        newElement.next=firstElement;
+        firstElement.prev = newElement;
+
+        newElement.prev =header;
+        header.next = newElement;
+        size++;
+
+	}
+
+	@Override
+	public void addLast(E e) {
+		// TODO Auto-generated method stub
+		Node<E> newElement = new Node<E>(e);
+        Node<E> lastElement = header.prev;
+
+        newElement.prev = lastElement;
+        lastElement.next = newElement;
+
+        newElement.next = header;
+        header.prev = newElement;
+
+        size++;
+		
 	}
 
 	@Override
 	public void add(int index, E element) {
 		// TODO Auto-generated method stub
-		if( index < 0||index> size()) {
-			throw new IndexOutOfBoundsException(); 
-			
-		}
-		if(index==size()) {
-			addLast(element); 
-	}else {
-		Node<E> newNode = new Node<E>(element); 
-		Node<E> current = node(index); 
-		Node<E> previousNode=current.prev; 
-		
-		newNode.prev=previousNode; 
-		previousNode.next=newNode;
-		
-		newNode.next= current; 
-		current.prev=newNode; 
-	
-	     size++;
-	}
-	   }	
-	@Override
-	public E removeFirst()  {
-		if(header.next==null) {
-			throw new NoSuchElementException(); 
-		}
-		Node<E> nodeToRemove=header.next; 
-		header.next = nodeToRemove.next; 
-		nodeToRemove.next = null; 
-		size--; 
-		return nodeToRemove.value; 
-	
-	}
-	public E removeLast() {
-		if(header.next==null) {
-			throw new NoSuchElementException(); 				
-		}
-	  Node<E> current=header.next;
-	  while(current.next !=header)
-		  current=current.next; 
-	  return current.value; 		
+        if(index <0 || index >size()){
+            throw new IndexOutOfBoundsException();
+        }
 
-	
-}
-	public E remove(int index) {
-		if (index < 0 || index >=size()) {
-			throw new NoSuchElementException();
-		}
-		Node<E> current = header;
-				for(int i = 0; i < index; i++)
-					current = current.next;
-				
-				Node<E> nodeToRemove = current.next;
-				current.next = nodeToRemove.next;
-				nodeToRemove.next = null;
-				size--;
-				
-				return nodeToRemove.value;
+        if(index == size()){
+            addLast(element);
+        }else {
+
+            Node<E> newNode = new Node<E>(element);
+            Node<E> current = node(index);
+            Node<E> previuosNode = current.prev;
+
+            newNode.prev = previuosNode;
+            previuosNode.next = newNode;
+
+            newNode.next = current;
+            current.prev = newNode;
+            size++;
+        }
+
 	}
+
+	@Override
+	public E removeFirst() {
+		// TODO Auto-generated method stub
+        if(isEmpty()){
+            throw new NoSuchElementException();
+        }
+
+        Node<E> nodeToRemove = header.next;
+        Node<E> newFirstElement = nodeToRemove.next;
+
+        header.next = newFirstElement;
+        newFirstElement.prev = header;
+
+        nodeToRemove.next = null;
+        nodeToRemove.prev = null;
+
+        size--;
+
+		return nodeToRemove.value;
+	}
+
+	@Override
+	public E removeLast() {
+		// TODO Auto-generated method stub
+		Node<E> nodeToRemove = header.prev;
+        Node<E> newLastElement = nodeToRemove.prev;
+
+        header.prev = newLastElement;
+        newLastElement.next = header;
+
+        nodeToRemove.prev =null;
+        nodeToRemove.next = null;
+
+        size--;
+		return nodeToRemove.value;
+	}
+
+	@Override
+	public E remove(int index) {
+		// TODO Auto-generated method stub
+		if(index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        Node<E> nodeToRemove = node(index);
+        Node<E> previousNode = nodeToRemove.prev;
+        Node<E> nextNode = nodeToRemove.next;
+
+        previousNode.next = nextNode;
+        nextNode.prev = previousNode;
+        nodeToRemove.next = null;
+        nodeToRemove.prev = null;
+
+        size--;
+
+        return nodeToRemove.value;
+	}
+
 	@Override
 	public boolean remove(Object o) {
-		int index = indexOf(o);
-				
-				if(index >= 0 && index < size()) {
-				remove(index);
-					return true;
-				}
-				
-				return false;
-			}
-		
+		// TODO Auto-generated method stub
+
+        int index = indexOf(o);
+
+        if(index >= 0 && index < size()) {
+            remove(index);
+            return true;
+        }
+
+        return false;
+	}
+
 	@Override
 	public E getFirst() {
-		if(header.next==null) {
-			throw new NoSuchElementException(); 
-		}
+		// TODO Auto-generated method stub
+		if(isEmpty()){
+            throw new NoSuchElementException();
+        }
+
 		return header.next.value;
 	}
-	
+
 	@Override
- public E getLast() {
-		 if(header.next==null) {
-				throw new NoSuchElementException(); 				
-			}
-		  Node<E> current=header.next;
-		  while(current.next !=null)
-			  current=current.next; 
-		  return current.value; 
+	public E getLast() {
+		// TODO Auto-generated method stub
+		if(isEmpty()){
+            throw new NoSuchElementException();
+        }
+
+		return header.prev.value;
 	}
 
 	@Override
 	public E get(int index) {
-		if(index < 0 || index >= size()) {
-						throw new IndexOutOfBoundsException();
-					}
-					
-					Node<E> current = header.next;
-					for(int i = 0; i < index; i++)
-						current = current.next;
-					
-					return current.value;
-		
+		// TODO Auto-generated method stub
+        if(index<0 || index>= size()){
+            throw new IndexOutOfBoundsException();
+        }
+        Node<E> current = header;
+        for(int i=0; i<=index; i++){
+            current =current.next;
+        }
+
+
+		return current.value;
 	}
-	
+
 	@Override
 	public E set(int index, E element) {
-		if(index < 0 || index >= size()) {
-						throw new IndexOutOfBoundsException();
-		}
-					
-				Node<E> current = header.next;
-					for(int i = 0; i < index; i++)
-						current = current.next;
-					
-					E previousValue = current.value;
-					current.value = element;
-					
-					return previousValue;
-		
+		// TODO Auto-generated method stub
+        Node<E> current = header;
+        for(int i =0; i < index; i++){
+            current = current.next;
+
+        }
+
+        Node<E> newElement = current.next;
+        newElement.value = element;
+
+		return newElement.value;
 	}
 
 	@Override
 	public boolean contains(E e) {
-		Node<E> current = header.next;
-				while(current != null) {
-					if(current.value == e)
-						return true;
-					current = current.next;
-				}
-				
-				return false;
+		// TODO Auto-generated method stub
+		Node<E> current = header;
+        Node<E> nodeToSearch = new Node<E>(e);
+        for(int i =0; i <= size();i++){
+            if(nodeToSearch.value == current.value){
+                return true;
+            }
+            current = current.next;
+        }
+		return false;
 	}
+
 	@Override
- 	public int indexOf(Object o) {
- 		return -1;
- 	}
+	public int indexOf(Object o) {
+		// TODO Auto-generated method stub
+		int index = 0;
+
+        if(o == null) {
+            for (Node<E> x = header.next; x != header; x = x.next) {
+                if (x.value == null) {
+                    return index;
+                }
+                index++;
+            }
+        } else {
+            for (Node<E> x = header.next; x != header; x = x.next) {
+                if (o.equals(x.value)) {
+                    return index;
+                }
+                index++;
+            }
+        }
+
+        return -1;
+
+	}
 
 	@Override
 	public void clear() {
-		header.next = null;
- 		size = 0;
-		
-	}
-	
-	@Override
-	public int size() {	
-		return size; 
+		// TODO Auto-generated method stub
+		header.next = header;
+        header.prev = header;
+        size=0;
 	}
 
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return size;
+	}
 
 	@Override
 	public boolean isEmpty() {
-		return size()==0;
+		// TODO Auto-generated method stub
+		return size == 0;
 	}
+
 	@Override
-	public Object[] toArray() {
+    public Object[] toArray() {
+        Object[] returnArray = new Object[size];
+
+        int i = 0;
+        for(Node<E> x = header.next; x != header; x = x.next) {
+            returnArray[i++] = x.value;
+        }
+
+        return returnArray;
+    }
 	
-	Object[] returnArray = new Object[size];
-     int i = 0;
-     for(Node<E> x = header.next; x != null; x = x.next)
-	 returnArray[i++] = x.value;
-     return returnArray;
-	 }
+	public E josephus(int jumps){
+		Node<E> current = header.next;
+	    int dead =0;
+        int index;
+        int alive = size-1;
+	    while(dead < alive){
+
+            for(int i=0; i<jumps; i++){
+                while(current == header ){
+                    current = current.next;
+                }
+
+	            if(i == (jumps-1)){
+                    System.out.println("El valor de: " + current.value+" es eliminado");
+                    index = indexOf(current.value);
+                    current = current.prev;
+                    remove(index);
+	                dead++;
+                }
+
+                current = current.next;
+            }
+        }
+        return header.next.value;
+        
+    }
+	
 	@Override
- 	public String toString() {
-		if(header.next==null)
-			return"[]"; 
-		
-		Node<E> current = header.next; 
-		String returnValue = "[" + current.value; 
-		while(current.next !=null) {
-			current= current.next; 
-			returnValue += "," +current.value; 
-		}
-		return returnValue += "]"; 
-		
+	public String toString() {
+	    if(header.next.value == null){
+	        return "[]";
+        }
+
+        Node<E> current = header.next;
+	    String returnValue = "[" + current.value;
+
+	    while(current.next != header){
+	        current = current.next;
+	        returnValue += "," + current.value;
+        }
+
+        returnValue += "]";
+	    return returnValue;
+	}
+
 }
-}
-	
- 
-
-
-	
-	
-		
-	
-
-	
-
-

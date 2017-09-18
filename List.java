@@ -1,6 +1,6 @@
+package practica3;
 
 public interface List<E> {
-	
 	/**
 	 * Inserts the specified element at the beginning of this list.
 	 * @param e the element to add
@@ -132,5 +132,7 @@ public interface List<E> {
 	 * Adjacent elements are separated by the characters ", " (comma and space).
 	 * Elements are converted to strings as by String.valueOf(Object).
 	 */
-	public String toString();
+public String toString();
+	
+
 }
